@@ -6,3 +6,86 @@
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/JuliaText/PretrainedEmbeddings.jl?svg=true)](https://ci.appveyor.com/project/JuliaText/PretrainedEmbeddings-jl)
 [![CodeCov](https://codecov.io/gh/JuliaText/PretrainedEmbeddings.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaText/PretrainedEmbeddings.jl)
 [![Coveralls](https://coveralls.io/repos/github/JuliaText/PretrainedEmbeddings.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaText/PretrainedEmbeddings.jl?branch=master)
+
+
+## Introduction
+
+Word Embeddings are great.
+Basically the foundation of a huge pile of NLP work in the last decade and a half.
+Use them directly, or use them to initalize a neural network embedding layer.
+This package exposes access to pretrained embeddings.
+
+At present it offers the famous [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings for English only, and [FastText](https://fasttext.cc/) embeddings for hundreds of languages.
+
+
+## Example
+
+Load the package with
+
+```
+julia> using PretrainedEmbeddings
+```
+
+
+load up the default word2vec embeddings:
+```
+julia> load_embeddings(Word2Vec) 
+PretrainedEmbeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0673199 0.0529562 … -0.21143 0.0136373; -0.0534466 0.0654598 … -0.0087888 -0.0742876; … ; -0.00733469 0.0108946 … -0.00405157 0.0156112; -0.00514565 -0.0470722 … -0.0341579 0.0396559], String["</s>", "in", "for", "that", "is", "on", "##", "The", "with", "said"  …  "#-###-PA-PARKS", "Lackmeyer", "PERVEZ", "KUNDI", "Budhadeb", "Nautsch", "Antuane", "tricorne", "VISIONPAD", "RAFFAELE"])
+```
+
+
+Load up the first 100 embeddings from the default French FastText embeddings:
+```
+julia> load_embeddings(FastText_Text{:fr}; max_vocab_size=100) 
+PretrainedEmbeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0058 -0.0842 … -0.062 -0.0687; 0.0478 -0.0388 … 0.0064 -0.339; … ; 0.023 -0.0106 … -0.022 -0.1581; 0.0378 0.0579 … 0.0417 0.0714], String[",", "de", ".", "</s>", "la", "et", ":", "à", "le", "\""  …  "faire", "c'", "aussi", ">", "leur", "%", "si", "entre", "qu", "€"])
+```
+
+
+List all the default files for FastText in English:
+```
+julia> language_files(FastText_Text{:en}) # List all the possible default files for FastText in English
+3-element Array{String,1}:
+ "FastText Common Crawl/crawl-300d-2M.vec"
+ "FastText Wiki News/wiki-news-300d-1M.vec"
+ "FastText en Wiki Text/wiki.en.vec"
+```
+
+From the second of those default files, load the embeddings just for "red", "green", and "blue": 
+```
+julia> load_embeddings(FastText_Text{:en}, 2; keep_words=Set(["red", "green", "blue"]))
+PretrainedEmbeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[-0.0054 0.0404 -0.0293; 0.0406 0.0621 0.0224; … ; 0.218 0.1542 0.2256; 0.1315 0.1528 0.1051], String["red", "green", "blue"])
+```
+
+
+## Details
+
+
+### `load_embeddings`
+
+    load_embeddings(EmbeddingSystem, [embedding_file|default_file_number])
+    load_embeddings(EmbeddingSystem{:lang}, [embedding_file|default_file_number])
+
+Loaded the embeddings from a embedding file.
+The embeddings should be of the type given by the Embedding system.
+
+If the `embedding file` is not provided, a default embedding file will be used.
+(It will be automatically installed if required).
+EmbeddingSystems have a language type parameter.
+For example `FastText_Text{:fr}` or `Word2Vec{:en}`, if that language parameter is not given it defaults to English.
+(I am sorry for the poor state of the NLP field that many embedding formats are only available pretrained in English.)
+Using this the correct  default embedding file will be installed for that language.
+For some languages and embedding systems there are multiple possible files.
+You can check the list of them using for example `language_files(FastText_Text{:de})`.
+The first is nominally the most popular, but if you want to default to another you can do so by setting the `default_file_num`.
+
+
+## Configuration
+This package is build on top of [DataDeps.jl](https://github.com/oxinabox/DataDeps.jl).
+To configure, e.g., where downloaded files save to, and read from (and to understand how that works),
+see the DataDeps.jl readme.
+
+
+## Contributing
+
+ - Provide Hashstrings: I have only filled in the checksums for the FastText Embeddings that I have downloaded, which is only a small fraction. If you using embeddings files for a language that doesn't have its hashstring set, then DataDeps.jl will tell you the hashstring that need to be added to the file. It is a quick and easy PR.
+ - Provide Implementations of other loadered: If you have implementations of code to load another format (e.g. Binary FastTest) it would be great if you could contribute them. I know I have a few others kicking around somewhere.
