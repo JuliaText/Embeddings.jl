@@ -1,0 +1,21 @@
+# Documentation: http://docs.travis-ci.com/user/languages/julia/
+language: julia
+os:
+  - linux
+  - osx
+julia:
+  - 0.6
+  - nightly
+matrix:
+  allow_failures:
+    - julia: nightly
+  fast_finish: true
+notifications:
+  email: false
+script:
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - julia -e 'Pkg.clone(pwd()); Pkg.build("PretrainedEmbeddings"); Pkg.test("PretrainedEmbeddings"; coverage=true)'
+after_success:
+  - julia -e 'cd(Pkg.dir("PretrainedEmbeddings")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
+  - julia -e 'cd(Pkg.dir("PretrainedEmbeddings")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+  - julia -e 'Pkg.add("Documenter"); cd(Pkg.dir("PretrainedEmbeddings")); include(joinpath("docs", "make.jl"))'
