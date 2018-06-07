@@ -60,12 +60,12 @@ function init(::Type{FastText})
         push!(language_files(FastText_Text{:en}), "FastText $(source)/$(name)")
         register(DataDep("FastText $(source)",
             """
-            Dataset: FastText Word Embeddings for English, trained on  News Data
+            Dataset: FastText Word Embeddings for English (original release)
             Author: Bojanowski et. al. (Facebook)
             License: CC-SA 3.0
             Website: https://fasttext.cc/docs/en/english-vectors.html
 
-            300 dimentional FastText word embeddings, trained on Wikipedia
+            1 million 300 dimentional  word vectors trained on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens)
             Citation: P. Bojanowski*, E. Grave*, A. Joulin, T. Mikolov, Enriching Word Vectors with Subword Information
 
             Notice: this file is ~ 1GB
