@@ -1,11 +1,11 @@
-# PretrainedEmbeddings
+# Embeddings
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaText.github.io/PretrainedEmbeddings.jl/stable)
-[![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaText.github.io/PretrainedEmbeddings.jl/latest)
-[![Build Status](https://travis-ci.org/JuliaText/PretrainedEmbeddings.jl.svg?branch=master)](https://travis-ci.org/JuliaText/PretrainedEmbeddings.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/JuliaText/PretrainedEmbeddings.jl?svg=true)](https://ci.appveyor.com/project/JuliaText/PretrainedEmbeddings-jl)
-[![CodeCov](https://codecov.io/gh/JuliaText/PretrainedEmbeddings.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaText/PretrainedEmbeddings.jl)
-[![Coveralls](https://coveralls.io/repos/github/JuliaText/PretrainedEmbeddings.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaText/PretrainedEmbeddings.jl?branch=master)
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaText.github.io/Embeddings.jl/stable)
+[![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaText.github.io/Embeddings.jl/latest)
+[![Build Status](https://travis-ci.org/JuliaText/Embeddings.jl.svg?branch=master)](https://travis-ci.org/JuliaText/Embeddings.jl)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/JuliaText/Embeddings.jl?svg=true)](https://ci.appveyor.com/project/JuliaText/Embeddings-jl)
+[![CodeCov](https://codecov.io/gh/JuliaText/Embeddings.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaText/Embeddings.jl)
+[![Coveralls](https://coveralls.io/repos/github/JuliaText/Embeddings.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaText/Embeddings.jl?branch=master)
 
 
 ## Introduction
@@ -23,21 +23,21 @@ At present it offers the famous [Word2Vec](https://code.google.com/archive/p/wor
 Load the package with
 
 ```
-julia> using PretrainedEmbeddings
+julia> using Embeddings
 ```
 
 
 load up the default word2vec embeddings:
 ```
 julia> load_embeddings(Word2Vec) 
-PretrainedEmbeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0673199 0.0529562 … -0.21143 0.0136373; -0.0534466 0.0654598 … -0.0087888 -0.0742876; … ; -0.00733469 0.0108946 … -0.00405157 0.0156112; -0.00514565 -0.0470722 … -0.0341579 0.0396559], String["</s>", "in", "for", "that", "is", "on", "##", "The", "with", "said"  …  "#-###-PA-PARKS", "Lackmeyer", "PERVEZ", "KUNDI", "Budhadeb", "Nautsch", "Antuane", "tricorne", "VISIONPAD", "RAFFAELE"])
+Embeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0673199 0.0529562 … -0.21143 0.0136373; -0.0534466 0.0654598 … -0.0087888 -0.0742876; … ; -0.00733469 0.0108946 … -0.00405157 0.0156112; -0.00514565 -0.0470722 … -0.0341579 0.0396559], String["</s>", "in", "for", "that", "is", "on", "##", "The", "with", "said"  …  "#-###-PA-PARKS", "Lackmeyer", "PERVEZ", "KUNDI", "Budhadeb", "Nautsch", "Antuane", "tricorne", "VISIONPAD", "RAFFAELE"])
 ```
 
 
 Load up the first 100 embeddings from the default French FastText embeddings:
 ```
 julia> load_embeddings(FastText_Text{:fr}; max_vocab_size=100) 
-PretrainedEmbeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0058 -0.0842 … -0.062 -0.0687; 0.0478 -0.0388 … 0.0064 -0.339; … ; 0.023 -0.0106 … -0.022 -0.1581; 0.0378 0.0579 … 0.0417 0.0714], String[",", "de", ".", "</s>", "la", "et", ":", "à", "le", "\""  …  "faire", "c'", "aussi", ">", "leur", "%", "si", "entre", "qu", "€"])
+Embeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0058 -0.0842 … -0.062 -0.0687; 0.0478 -0.0388 … 0.0064 -0.339; … ; 0.023 -0.0106 … -0.022 -0.1581; 0.0378 0.0579 … 0.0417 0.0714], String[",", "de", ".", "</s>", "la", "et", ":", "à", "le", "\""  …  "faire", "c'", "aussi", ">", "leur", "%", "si", "entre", "qu", "€"])
 ```
 
 
@@ -53,7 +53,7 @@ julia> language_files(FastText_Text{:en}) # List all the possible default files 
 From the second of those default files, load the embeddings just for "red", "green", and "blue": 
 ```
 julia> load_embeddings(FastText_Text{:en}, 2; keep_words=Set(["red", "green", "blue"]))
-PretrainedEmbeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[-0.0054 0.0404 -0.0293; 0.0406 0.0621 0.0224; … ; 0.218 0.1542 0.2256; 0.1315 0.1528 0.1051], String["red", "green", "blue"])
+Embeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[-0.0054 0.0404 -0.0293; 0.0406 0.0621 0.0224; … ; 0.218 0.1542 0.2256; 0.1315 0.1528 0.1051], String["red", "green", "blue"])
 ```
 
 

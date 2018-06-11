@@ -1,5 +1,5 @@
 __precompile__()
-module PretrainedEmbeddings
+module Embeddings
 using DataDeps
 using AutoHashEquals
 

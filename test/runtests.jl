@@ -1,4 +1,4 @@
-using PretrainedEmbeddings
+using Embeddings
 using Base.Test
 
 """
