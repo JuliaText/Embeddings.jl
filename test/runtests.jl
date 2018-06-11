@@ -21,9 +21,7 @@ function tempdatadeps(fun)
             warn("Something went wrong with removing $tempdir")
             warn(err)
         end
-        run(`df -h`)
-    end
-    
+    end   
 end
 
 """
