@@ -1,6 +1,7 @@
 using Embeddings
 using Base.Test
 
+
 """
     tempdatadeps(fun)
 
@@ -23,6 +24,12 @@ function tempdatadeps(fun)
         end
     end   
 end
+
+
+# uncomment the below to not use tempdatadeps (i.e. if not debugging)
+tempdatadeps(fun) = fun()
+
+
 
 """
 @testset_nokeep_data

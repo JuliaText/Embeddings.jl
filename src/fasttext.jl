@@ -42,7 +42,7 @@ function _load_embeddings(::Type{<:FastText_Text}, embedding_file, max_vocab_siz
 
     LL = LL[:,1:index-1] #throw away unused columns
     indexed_words = indexed_words[1:index-1] #throw away unused columns
-    Embeddings(LL, indexed_words)
+    LL, indexed_words
 end
 
 

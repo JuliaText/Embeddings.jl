@@ -16,7 +16,7 @@ function __init__()
     end
 end
 
-@auto_hash_equals struct Embeddings{M<:AbstractMatrix, A<:AbstractVector}
+@auto_hash_equals struct EmbeddingTable{M<:AbstractMatrix, A<:AbstractVector}
     embeddings::M
     vocab::A
 end
@@ -94,7 +94,7 @@ function load_embeddings(::Type{T},
         max_vocab_size=typemax(Int),
         keep_words=Set()) where T<:EmbeddingSystem
     
-    _load_embeddings(T, embedding_file, max_vocab_size,  keep_words)
+    EmbeddingTable(_load_embeddings(T, embedding_file, max_vocab_size,  keep_words)...)
 end
 
 end

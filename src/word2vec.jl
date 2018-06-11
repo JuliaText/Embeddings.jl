@@ -52,6 +52,6 @@ function _load_embeddings(::Type{<:Word2Vec}, embedding_file, max_vocab_size, ke
 
     LL = LL[:,1:index-1] #throw away unused columns
     indexed_words = indexed_words[1:index-1] #throw away unused columns
-    Embeddings(LL, indexed_words)
+    LL, indexed_words
 end
 
