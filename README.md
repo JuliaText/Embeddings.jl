@@ -30,14 +30,14 @@ julia> using Embeddings
 load up the default word2vec embeddings:
 ```
 julia> load_embeddings(Word2Vec) 
-Embeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0673199 0.0529562 … -0.21143 0.0136373; -0.0534466 0.0654598 … -0.0087888 -0.0742876; … ; -0.00733469 0.0108946 … -0.00405157 0.0156112; -0.00514565 -0.0470722 … -0.0341579 0.0396559], String["</s>", "in", "for", "that", "is", "on", "##", "The", "with", "said"  …  "#-###-PA-PARKS", "Lackmeyer", "PERVEZ", "KUNDI", "Budhadeb", "Nautsch", "Antuane", "tricorne", "VISIONPAD", "RAFFAELE"])
+Embeddings.EmbeddingTable{Array{Float32,2},Array{String,1}}(Float32[0.0673199 0.0529562 … -0.21143 0.0136373; -0.0534466 0.0654598 … -0.0087888 -0.0742876; … ; -0.00733469 0.0108946 … -0.00405157 0.0156112; -0.00514565 -0.0470722 … -0.0341579 0.0396559], String["</s>", "in", "for", "that", "is", "on", "##", "The", "with", "said"  …  "#-###-PA-PARKS", "Lackmeyer", "PERVEZ", "KUNDI", "Budhadeb", "Nautsch", "Antuane", "tricorne", "VISIONPAD", "RAFFAELE"])
 ```
 
 
 Load up the first 100 embeddings from the default French FastText embeddings:
 ```
 julia> load_embeddings(FastText_Text{:fr}; max_vocab_size=100) 
-Embeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[0.0058 -0.0842 … -0.062 -0.0687; 0.0478 -0.0388 … 0.0064 -0.339; … ; 0.023 -0.0106 … -0.022 -0.1581; 0.0378 0.0579 … 0.0417 0.0714], String[",", "de", ".", "</s>", "la", "et", ":", "à", "le", "\""  …  "faire", "c'", "aussi", ">", "leur", "%", "si", "entre", "qu", "€"])
+Embeddings.EmbeddingTable{Array{Float32,2},Array{String,1}}(Float32[0.0058 -0.0842 … -0.062 -0.0687; 0.0478 -0.0388 … 0.0064 -0.339; … ; 0.023 -0.0106 … -0.022 -0.1581; 0.0378 0.0579 … 0.0417 0.0714], String[",", "de", ".", "</s>", "la", "et", ":", "à", "le", "\""  …  "faire", "c'", "aussi", ">", "leur", "%", "si", "entre", "qu", "€"])
 ```
 
 
@@ -53,7 +53,7 @@ julia> language_files(FastText_Text{:en}) # List all the possible default files 
 From the second of those default files, load the embeddings just for "red", "green", and "blue": 
 ```
 julia> load_embeddings(FastText_Text{:en}, 2; keep_words=Set(["red", "green", "blue"]))
-Embeddings.Embeddings{Array{Float32,2},Array{String,1}}(Float32[-0.0054 0.0404 -0.0293; 0.0406 0.0621 0.0224; … ; 0.218 0.1542 0.2256; 0.1315 0.1528 0.1051], String["red", "green", "blue"])
+Embeddings.EmbeddingTable{Array{Float32,2},Array{String,1}}(Float32[-0.0054 0.0404 -0.0293; 0.0406 0.0621 0.0224; … ; 0.218 0.1542 0.2256; 0.1315 0.1528 0.1051], String["red", "green", "blue"])
 ```
 
 
@@ -78,7 +78,7 @@ For some languages and embedding systems there are multiple possible files.
 You can check the list of them using for example `language_files(FastText_Text{:de})`.
 The first is nominally the most popular, but if you want to default to another you can do so by setting the `default_file_num`.
 
-### This returns an `Embeddings` object.
+### This returns an `EmbeddingTable` object.
 This has 2 fields.
 
  - `embeddings` is a matrix, each column is the embedding for a word.
