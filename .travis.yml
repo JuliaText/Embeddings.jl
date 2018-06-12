@@ -18,8 +18,8 @@ notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.clone(pwd()); Pkg.build("PretrainedEmbeddings"); Pkg.test("PretrainedEmbeddings"; coverage=true)'
+  - julia -e 'Pkg.clone(pwd()); Pkg.build("Embeddings"); Pkg.test("Embeddings"; coverage=true)'
 after_success:
-  - julia -e 'cd(Pkg.dir("PretrainedEmbeddings")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
-  - julia -e 'cd(Pkg.dir("PretrainedEmbeddings")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
-  - julia -e 'Pkg.add("Documenter"); cd(Pkg.dir("PretrainedEmbeddings")); include(joinpath("docs", "make.jl"))'
+  - julia -e 'cd(Pkg.dir("Embeddings")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
+  - julia -e 'cd(Pkg.dir("Embeddings")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+  - julia -e 'Pkg.add("Documenter"); cd(Pkg.dir("Embeddings")); include(joinpath("docs", "make.jl"))'
