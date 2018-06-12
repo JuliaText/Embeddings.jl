@@ -34,11 +34,11 @@ install:
 build_script:
   # Need to convert from shallow to complete for Pkg.clone to work
   - IF EXIST .git\shallow (git fetch --unshallow)
-  - C:\projects\julia\bin\julia -e "versioninfo(); Pkg.clone(pwd(), \"PretrainedEmbeddings\"); Pkg.build(\"PretrainedEmbeddings\")"
+  - C:\projects\julia\bin\julia -e "versioninfo(); Pkg.clone(pwd(), \"Embeddings\"); Pkg.build(\"Embeddings\")"
 
 test_script:
-  - C:\projects\julia\bin\julia -e "Pkg.test(\"PretrainedEmbeddings\"; coverage=true)"
+  - C:\projects\julia\bin\julia -e "Pkg.test(\"Embeddings\"; coverage=true)"
 
 after_test:
-  - C:\projects\julia\bin\julia -e "cd(Pkg.dir(\"PretrainedEmbeddings\")); Pkg.add(\"Coverage\"); using Coverage; Codecov.submit(process_folder())"
-  - C:\projects\julia\bin\julia -e "cd(Pkg.dir(\"PretrainedEmbeddings\")); Pkg.add(\"Coverage\"); using Coverage; Coveralls.submit(process_folder())"
+  - C:\projects\julia\bin\julia -e "cd(Pkg.dir(\"Embeddings\")); Pkg.add(\"Coverage\"); using Coverage; Codecov.submit(process_folder())"
+  - C:\projects\julia\bin\julia -e "cd(Pkg.dir(\"Embeddings\")); Pkg.add(\"Coverage\"); using Coverage; Coveralls.submit(process_folder())"
