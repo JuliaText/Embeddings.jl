@@ -6,14 +6,15 @@ using DataDeps
 using AutoHashEquals
 
 export load_embeddings, language_files
-export Word2Vec, FastText_Text
+export Word2Vec, GloVe, FastText_Text
 
 abstract type EmbeddingSystem{LANG} end
 include("fasttext.jl")
+include("glove.jl")
 include("word2vec.jl")
 
 function __init__()
-    for T in [Word2Vec, FastText]
+    for T in [Word2Vec, GloVe, FastText]
         init(T)
     end
 end

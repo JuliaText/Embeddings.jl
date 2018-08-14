@@ -15,7 +15,7 @@ Basically the foundation of a huge pile of NLP work in the last decade and a hal
 Use them directly, or use them to initalize a neural network embedding layer.
 This package exposes access to pretrained embeddings.
 
-At present it offers the famous [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings for English only, and [FastText](https://fasttext.cc/) embeddings for hundreds of languages.
+At present it offers the famous [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings for English only, [GloVe](https://nlp.stanford.edu/projects/glove/) embeddings for English only, and [FastText](https://fasttext.cc/) embeddings for hundreds of languages.
 
 
 ## Example
@@ -56,6 +56,30 @@ julia> load_embeddings(FastText_Text{:en}, 2; keep_words=Set(["red", "green", "b
 Embeddings.EmbeddingTable{Array{Float32,2},Array{String,1}}(Float32[-0.0054 0.0404 -0.0293; 0.0406 0.0621 0.0224; … ; 0.218 0.1542 0.2256; 0.1315 0.1528 0.1051], String["red", "green", "blue"])
 ```
 
+List all the default files for GloVe in English:
+```
+julia> language_files(GloVe{:en})
+10-element Array{String,1}:
+ "glove.6B/glove.6B.50d.txt"
+ "glove.6B/glove.6B.100d.txt"
+ "glove.6B/glove.6B.200d.txt"
+ "glove.6B/glove.6B.300d.txt"
+ "glove.42B.300d/glove.42B.300d.txt"
+ "glove.840B.300d/glove.840B.300d.txt"
+ "glove.twitter.27B/glove.twitter.27B.25d.txt"
+ "glove.twitter.27B/glove.twitter.27B.50d.txt"
+ "glove.twitter.27B/glove.twitter.27B.100d.txt"
+ "glove.twitter.27B/glove.twitter.27B.200d.txt"
+```
+
+Load the 200d GloVe embedding matrix for the top 10000 words trained on 6B words:
+```
+julia> glove = load_embeddings(GloVe{:en}, 3, max_vocab_size=10000)
+Embeddings.EmbeddingTable{Array{Float32,2},Array{String,1}}(Float32[-0.071549 0.17651 … 0.19765 -0.22419; 0.093459 0.29208 … -0.31357 0.039311; … ; 0.030591 -0.23189 … -0.72917 0.49645; 0.25577 -0.10814 … 0.07403 0.41581], ["the", ",", ".", "of", "to", "and", "in", "a", "\"", "'s"  …  "slashed", "23-year", "communique", "hawk", "necessity", "petty", "stretching", "taxpayer", "resistant", "quinn"])
+
+julia> size(glove)
+(200, 10000)
+```
 
 ## Details
 
