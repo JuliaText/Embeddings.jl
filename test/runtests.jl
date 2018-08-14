@@ -1,5 +1,5 @@
 using Embeddings
-using Base.Test
+using Test
 
 
 """
@@ -10,17 +10,17 @@ Run the function and delete all created datadeps afterwards
 function tempdatadeps(fun)
     tempdir = mktempdir()
     try
-        info("sending all datadeps to $tempdir")
+        @info "sending all datadeps to $tempdir"
         withenv("DATADEPS_LOAD_PATH"=>tempdir) do
             fun()
         end
     finally
         try
-            info("removing $tempdir")
+            @info "removing $tempdir"
             rm(tempdir, recursive=true, force=true)
         catch err
-            warn("Something went wrong with removing $tempdir")
-            warn(err)
+            @warn "Something went wrong with removing $tempdir"
+            @warn err
         end
     end   
 end

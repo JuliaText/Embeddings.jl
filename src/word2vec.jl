@@ -29,15 +29,18 @@ function _load_embeddings(::Type{<:Word2Vec}, embedding_file, max_vocab_size, ke
         vocab_size, vector_size = parse.(Int64, split(readline(fh)))
         max_stored_vocab_size = min(max_vocab_size, vocab_size)
 
-        indexed_words = Array{String}(max_stored_vocab_size)
-        LL = Array{Float32}(vector_size, max_stored_vocab_size)
+        indexed_words = Vector{String}(undef, max_stored_vocab_size)
+        LL = Array{Float32}(undef, vector_size, max_stored_vocab_size)
 
         index = 1
         @inbounds for _ in 1:vocab_size
-            word = readuntil(fh, ' ')[1:end-1] #remove last space
-            vector = read(fh, Float32,vector_size )
+            word = readuntil(fh, ' ', keep=false)
+            vector = Vector{Float32}(undef, vector_size)
+            @inbounds for i = 1:vector_size
+                vector[i] = read(fh, Float32)
+            end
 
-            if !contains(word, "_") && (length(keep_words)==0 || word in keep_words ) #If it isn't a phrase
+            if !occursin("_", word) && (length(keep_words)==0 || word in keep_words ) #If it isn't a phrase
                 LL[:,index]=vector./norm(vector)
                 indexed_words[index] = word
 

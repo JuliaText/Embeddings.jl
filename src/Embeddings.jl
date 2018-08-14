@@ -1,5 +1,7 @@
 __precompile__()
 module Embeddings
+
+using Statistics: norm
 using DataDeps
 using AutoHashEquals
 
