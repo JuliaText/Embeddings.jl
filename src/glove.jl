@@ -1,6 +1,6 @@
 abstract type GloVe{LANG} <: EmbeddingSystem{LANG} end
 
-const glove_max_size = 4000000
+const glove_max_size = 4_000_000
 
 function init(::Type{GloVe})
     vectors = [("glove.6B",
