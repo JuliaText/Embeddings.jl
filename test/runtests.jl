@@ -1,6 +1,7 @@
 using Embeddings
-using Base.Test
+using Test
 
+using DataDeps
 
 """
     tempdatadeps(fun)
@@ -10,17 +11,16 @@ Run the function and delete all created datadeps afterwards
 function tempdatadeps(fun)
     tempdir = mktempdir()
     try
-        info("sending all datadeps to $tempdir")
+        @info "sending all datadeps to $tempdir"
         withenv("DATADEPS_LOAD_PATH"=>tempdir) do
             fun()
         end
     finally
         try
-            info("removing $tempdir")
+            @info "removing $tempdir"
             rm(tempdir, recursive=true, force=true)
         catch err
-            warn("Something went wrong with removing $tempdir")
-            warn(err)
+            @warn "Something went wrong with removing tempdir" tempdir exception=err
         end
     end   
 end
@@ -65,6 +65,56 @@ end
     @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
 end
 
+@testset "GloVe" begin
+    # just test one file from each of provided sets
+    tests = ["glove.6B/glove.6B.50d.txt",
+             #"glove.42B.300d/glove.42B.300d.txt",     # These files are too slow to download
+             #"glove.840B.300d/glove.840B.300d.txt",   # They are not that big bt are on a slow server
+             "glove.twitter.27B/glove.twitter.27B.25d.txt"]
+
+    # read dimensionality from name (e.g. glove.6B.300d.txt -> 300)
+    dim(x) = parse(Int, match(r"\.([0-9]+)d\.", x).captures[1])
+
+    for file in tests
+        filename = split(file, Base.Filesystem.path_separator)[end]
+
+        @testset_nokeep_data "$filename" begin
+            @testset "Basic" begin
+                glove = load_embeddings(GloVe{:en}, @datadep_str(file), max_vocab_size=1000)
+                @test length(glove.vocab) == 1000
+                @test size(glove.embeddings) == (dim(file), 1000)
+                @test "for" ∈ glove.vocab
+            end
+
+            @testset "Specific" begin
+                colors = ["red", "green", "blue"]
+                glove_colors = load_embeddings(GloVe, @datadep_str(file), keep_words=colors)
+                @test length(glove_colors.vocab) == 3
+                @test size(glove_colors.embeddings) == (dim(file), 3)
+                @test Set(glove_colors.vocab) == Set(colors)
+            end
+        end
+    end
+
+    @testset "Custom" begin
+        # first 100 lines of official glove.6B.50d.txt
+        custom_glove_file = joinpath(@__DIR__, "data", "custom.glove.txt")
+        @testset "Basic" begin
+            glove = load_embeddings(GloVe, custom_glove_file)
+            @test length(glove.vocab) == 100
+            @test size(glove.embeddings) == (50, 100)
+            @test "the" ∈ glove.vocab
+        end
+        @testset "Specific" begin
+            punct = [".", ","]
+            glove_punct = load_embeddings(GloVe, custom_glove_file, keep_words=punct)
+            @test length(glove_punct.vocab) == 2
+            @test size(glove_punct.embeddings) == (50, 2)
+            @test Set(glove_punct.vocab) == Set(punct)
+        end
+    end
+
+end
 
 @testset "FastText" begin
     @testset_nokeep_data "English 1" begin

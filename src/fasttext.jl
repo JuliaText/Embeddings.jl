@@ -21,8 +21,8 @@ function _load_embeddings(::Type{<:FastText_Text}, embedding_file, max_vocab_siz
         vocab_size, vector_size = parse.(Int64, split(readline(fh)))
         max_stored_vocab_size = min(max_vocab_size, vocab_size)
         
-        indexed_words = Array{String}(max_stored_vocab_size)
-        LL = Array{Float32}(vector_size, max_stored_vocab_size)
+        indexed_words = Vector{String}(undef, max_stored_vocab_size)
+        LL = Array{Float32}(undef, vector_size, max_stored_vocab_size)
         index = 1
         @inbounds for _ in 1:vocab_size
             line = readline(fh)
