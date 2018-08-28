@@ -1,4 +1,3 @@
-__precompile__()
 module Embeddings
 
 using Statistics: norm
