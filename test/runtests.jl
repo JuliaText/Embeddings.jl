@@ -68,8 +68,8 @@ end
 @testset "GloVe" begin
     # just test one file from each of provided sets
     tests = ["glove.6B/glove.6B.50d.txt",
-             "glove.42B.300d/glove.42B.300d.txt",
-             "glove.840B.300d/glove.840B.300d.txt",
+             #"glove.42B.300d/glove.42B.300d.txt",     # These files are too slow to download
+             #"glove.840B.300d/glove.840B.300d.txt",   # They are not that big bt are on a slow server
              "glove.twitter.27B/glove.twitter.27B.25d.txt"]
 
     # read dimensionality from name (e.g. glove.6B.300d.txt -> 300)
