@@ -45,30 +45,24 @@ function init(::Type{GloVe})
 end
 
 function _load_embeddings(::Type{<:GloVe}, embedding_file, max_vocab_size, keep_words)
-    local LL, indexed_words, index, D
+    local LL, indexed_words, index
     if length(keep_words) > 0
         max_vocab_size = length(keep_words)
     end
-    D = open(embedding_file) do f
-        length(split(readline(f))) - 1
-    end
-    max_stored_vocab_size = min(max_vocab_size, glove_max_size)
-    indexed_words = Vector{String}(undef, max_stored_vocab_size)
-    LL = Array{Float32}(undef, D, max_stored_vocab_size)
+    indexed_words = Vector{String}()
+    LL = Vector{Vector{Float32}}()
     open(embedding_file) do f
         index = 1
         for line in eachline(f)
             xs = split(line)
             word = xs[1]
             if length(keep_words) == 0 || (word in keep_words)
-                index > max_stored_vocab_size && break
-                @inbounds LL[:, index] = parse.(Float32, xs[2:end]) # 2.64, then ~0.3 (?)
-                @inbounds indexed_words[index] = word
+                index > max_vocab_size && break
+                push!(indexed_words, word)
+                push!(LL, parse.(Float32, xs[2:end]))
                 index += 1
             end
         end
     end
-    LL = LL[:, 1:index-1]
-    indexed_words = indexed_words[1:index-1]
-    return LL, indexed_words
+    return reduce(hcat, LL), indexed_words
 end
