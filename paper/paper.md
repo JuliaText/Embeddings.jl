@@ -44,6 +44,7 @@ to allow for convenient automatic downloading of the data when and if required.
 It also uses the DataDeps.jl prompt to ensure the user of the embeddings has full knowledge of the original source of the data, and which papers to cite etc.
 
 It currently provides access to
+
  - multiple sets of word2vec embeddings ([@word2vec]) for English
  - multiple sets of GLoVE ([@glove]) embeddings for English
  - multiple sets of FastText embeddings ([@fasttext157lang], [@fasttext]) for several hundred languages
