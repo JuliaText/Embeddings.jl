@@ -12,10 +12,13 @@ authors:
    affiliation: 1
  - name: David Ellison
    orcid: 0000-0002-2431-3963
+   affiliation: 2
 
 affiliations:
  - name: The University of Western Australia
    index: 1
+ - name: None
+   index: 2
 
 date: 30 Aug 2018
 bibliography: paper.bib
@@ -36,7 +39,7 @@ In such deep learning packages, it is common to use word embeddings as an input 
 where they may be kept invariant or used as initialization for fine-tuning on the supervised task.
 They can be summed to represent a bag of words, concatenated to form a matrix representation of a sentence or document, or used otherwise in a wide variety of natural language processing tasks.
 
-Embeddings.jl makes use of DataDeps.jl ([@2018arXiv180801091W]),
+Embeddings.jl makes use of DataDeps.jl ([@DataDeps]),
 to allow for convenient automatic downloading of the data when and if required.
 It also uses the DataDeps.jl prompt to ensure the user of the embeddings has full knowledge of the original source of the data, and which papers to cite etc.
 
