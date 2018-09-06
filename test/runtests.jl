@@ -1,7 +1,8 @@
 using Embeddings
 using Test
-
+using Suppressor
 using DataDeps
+
 
 """
     tempdatadeps(fun)
@@ -35,7 +36,7 @@ end
 @testset_nokeep_data
 
 Use just like @testset,
-but know that it deletes any downloaded data dependencies when it is done.
+but know that it deletes any downquiet_loaded data dependencies when it is done.
 """
 macro testset_nokeep_data(name, expr)
     quote
@@ -46,12 +47,21 @@ macro testset_nokeep_data(name, expr)
 end
 
 
+"""
+Loads embeddings with suppressed output.
+For purposes of not flooding the logs.
+During downloads.
+"""
+function quiet_load_embeddings(args...; kwargs...)
+     @suppress load_embeddings(args...; kwargs...)
+end
+
 @testset_nokeep_data "Word2Vec" begin
-    embs_full = load_embeddings(Word2Vec)
+    embs_full =  quiet_load_embeddings(Word2Vec)
 
     @test size(embs_full.embeddings) == (300, length(embs_full.vocab))
 
-    embs_mini = load_embeddings(Word2Vec; max_vocab_size=100)
+     embs_mini = quiet_load_embeddings(Word2Vec; max_vocab_size=100)
     @test length(embs_mini.vocab)==100
 
     @test embs_mini.embeddings == embs_full.embeddings[:, 1:100]
@@ -59,7 +69,7 @@ end
 
     @test "for" ∈ embs_mini.vocab
 
-    embs_specific =  load_embeddings(Word2Vec; keep_words=Set(["red", "green", "blue"]))
+     embs_specific =  quiet_load_embeddings(Word2Vec; keep_words=Set(["red", "green", "blue"]))
 
     @test size(embs_specific.embeddings) == (300, 3)
     @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
@@ -68,7 +78,7 @@ end
 @testset "GloVe" begin
     # just test one file from each of provided sets
     tests = ["glove.6B/glove.6B.50d.txt",
-             #"glove.42B.300d/glove.42B.300d.txt",     # These files are too slow to download
+             #"glove.42B.300d/glove.42B.300d.txt",     # These files are too slow to downquiet_load
              #"glove.840B.300d/glove.840B.300d.txt",   # They are not that big bt are on a slow server
              "glove.twitter.27B/glove.twitter.27B.25d.txt"]
 
@@ -80,7 +90,7 @@ end
 
         @testset_nokeep_data "$filename" begin
             @testset "Basic" begin
-                glove = load_embeddings(GloVe{:en}, @datadep_str(file), max_vocab_size=1000)
+                 glove = quiet_load_embeddings(GloVe{:en}, @datadep_str(file), max_vocab_size=1000)
                 @test length(glove.vocab) == 1000
                 @test size(glove.embeddings) == (dim(file), 1000)
                 @test "for" ∈ glove.vocab
@@ -88,7 +98,7 @@ end
 
             @testset "Specific" begin
                 colors = ["red", "green", "blue"]
-                glove_colors = load_embeddings(GloVe, @datadep_str(file), keep_words=colors)
+                 glove_colors = quiet_load_embeddings(GloVe, @datadep_str(file), keep_words=colors)
                 @test length(glove_colors.vocab) == 3
                 @test size(glove_colors.embeddings) == (dim(file), 3)
                 @test Set(glove_colors.vocab) == Set(colors)
@@ -100,14 +110,14 @@ end
         # first 100 lines of official glove.6B.50d.txt
         custom_glove_file = joinpath(@__DIR__, "data", "custom.glove.txt")
         @testset "Basic" begin
-            glove = load_embeddings(GloVe, custom_glove_file)
+            glove = quiet_load_embeddings(GloVe, custom_glove_file)
             @test length(glove.vocab) == 100
             @test size(glove.embeddings) == (50, 100)
             @test "the" ∈ glove.vocab
         end
         @testset "Specific" begin
             punct = [".", ","]
-            glove_punct = load_embeddings(GloVe, custom_glove_file, keep_words=punct)
+            glove_punct = quiet_load_embeddings(GloVe, custom_glove_file, keep_words=punct)
             @test length(glove_punct.vocab) == 2
             @test size(glove_punct.embeddings) == (50, 2)
             @test Set(glove_punct.vocab) == Set(punct)
@@ -119,13 +129,13 @@ end
 @testset "FastText" begin
     @testset_nokeep_data "English 1" begin
         @testset "Basic" begin
-            embs1 = load_embeddings(FastText_Text; max_vocab_size=100)
+             embs1 = quiet_load_embeddings(FastText_Text; max_vocab_size=100)
             @test length(embs1.vocab)==100
             @test size(embs1.embeddings) == (300, 100)
         end
             
         @testset "Specific" begin           
-            embs_specific =  load_embeddings(FastText_Text; keep_words=Set(["red", "green", "blue"]))
+             embs_specific =  quiet_load_embeddings(FastText_Text; keep_words=Set(["red", "green", "blue"]))
             @test size(embs_specific.embeddings) == (300, 3)
             @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
         end
@@ -133,7 +143,7 @@ end
 
         
     @testset_nokeep_data "French" begin
-        embs_fr = load_embeddings(FastText_Text{:fr}; max_vocab_size=100)
+         embs_fr = quiet_load_embeddings(FastText_Text{:fr}; max_vocab_size=100)
         @test length(embs_fr.vocab)==100
         @test size(embs_fr.embeddings) == (300, 100)
     end
@@ -141,7 +151,7 @@ end
 
         
     @testset_nokeep_data "English file number 2" begin
-        embs_specific =  load_embeddings(FastText_Text, 2; keep_words=Set(["red", "green", "blue"]))
+        embs_specific =  quiet_load_embeddings(FastText_Text, 2; keep_words=Set(["red", "green", "blue"]))
         @test size(embs_specific.embeddings) == (300, 3)
         @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
     end   
