@@ -191,9 +191,9 @@ end
         @test embs_mini.vocab == embs_full.vocab[1:100]
 
         embs_specific =  load_embeddings(ConceptNet{:compressed};
-                                         keep_words=Set(["red", "green", "blue"]))
+                                         keep_words=Set(["/c/en/red", "/c/en/green", "/c/en/blue"]))
 
         @test size(embs_specific.embeddings) == (300, 3)
-        @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
+        @test Set(embs_specific.vocab) == Set(["/c/en/red", "/c/en/green", "/c/en/blue"])
     end
 end
