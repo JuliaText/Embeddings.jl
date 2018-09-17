@@ -2,19 +2,22 @@ abstract type ConceptNet{LANG} <: EmbeddingSystem{LANG} end
 
 
 function init(::Type{ConceptNet})
-    for (source, link, hashstring, post_fetch_method, lang) in [
+    for (source, link, file, hashstring, post_fetch_method, lang) in [
             ("Multilingual",
              "https://conceptnet.s3.amazonaws.com/downloads/2017/numberbatch/numberbatch-17.06.txt.gz",
+             "numberbatch-17.06.txt",
              "375ac41e8f9caab172fc169e54e8658be23ece6cd92188bf700a99330cd1a81b",
              DataDeps.unpack,
              :multi),
             ("English",
              "https://conceptnet.s3.amazonaws.com/downloads/2017/numberbatch/numberbatch-17.06.txt.gz",
+             "numberbatch-en-17.06.txt",
              "72faf0a487c61b9a6a8c9ff0a1440d2f4936bb19102bddf27a833c2567620f2d",
              DataDeps.unpack,
              :en),
             ("Compressed",
              "http://conceptnet.s3.amazonaws.com/precomputed-data/2016/numberbatch/17.06/mini.h5",
+             "mini.h5",
              "87f8b48fd01088b72013dfbcc3160f0d0e16942797959e0824b9b69f31a7b222",
              identity,
              :compressed)
@@ -37,14 +40,14 @@ function init(::Type{ConceptNet})
         post_fetch_method=post_fetch_method
         ))
 
-        push!(language_files(ConceptNet{lang}), "ConceptNet_$(source)/$(join(split(link, "/")[end]))")
+        push!(language_files(ConceptNet{lang}), "ConceptNet_$(source)/$(file)")
     end
 end
 
 
 function _load_embeddings(::Type{<:ConceptNet}, embedding_file, max_vocab_size, keep_words)
     local LL, indexed_words, index
-    if any(endswith.(file, [".h5", ".hdf5"]))
+    if any(endswith.(embedding_file, [".h5", ".hdf5"]))
         LL, indexed_words = _load_hdf5_embeddings(embedding_file,
                                                   max_vocab_size=max_vocab_size,
                                                   keep_words=keep_words)
