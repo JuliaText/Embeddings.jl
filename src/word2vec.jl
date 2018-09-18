@@ -34,18 +34,18 @@ function _load_embeddings(::Type{<:Word2Vec}, embedding_file, max_vocab_size, ke
 
         index = 1
         @inbounds for _ in 1:vocab_size
-            word = readuntil(fh, ' '; keep=false)
+            word = readuntil(fh, ' ', keep=false)
             vector = Vector{Float32}(undef, vector_size)
             @inbounds for i = 1:vector_size
                 vector[i] = read(fh, Float32)
             end
 
-            if isempty(keep_words) || word ∈ keep_words
-                LL[:, index] = vector ./ norm(vector)
+            if !occursin("_", word) && (length(keep_words)==0 || word in keep_words ) #If it isn't a phrase
+                LL[:,index]=vector./norm(vector)
                 indexed_words[index] = word
 
-                index += 1
-                if index > max_stored_vocab_size
+                index+=1
+                if index>max_stored_vocab_size
                     break
                 end
             end

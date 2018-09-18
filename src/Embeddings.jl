@@ -1,6 +1,6 @@
 module Embeddings
 
-using LinearAlgebra: norm
+using Statistics: norm
 using DataDeps
 using AutoHashEquals
 
