@@ -68,26 +68,29 @@ function _load_txt_embeddings(file::AbstractString, max_vocab_size, keep_words)
     open(file, "r") do fid
         vocab_size, vector_size = map(x->parse(Int,x), split(readline(fid)))
         max_stored_vocab_size = _get_vocab_size(vocab_size, max_vocab_size)
-        data = readlines(fid)
 
         indexed_words = Vector{String}(undef, max_stored_vocab_size)
-        LL = Array{Float32}(undef, vector_size, max_stored_vocab_size)
-        _parseline = (buf)-> begin
+        LL = Array{Float64}(undef, vector_size, max_stored_vocab_size)
+
+        function _parseline(buf; word_only=false)
             bufvec = split(buf, " ")
             word = string(popfirst!(bufvec))
-            embedding = parse.(Float64, bufvec)
-            #embedding = map(x->parse(Float64,x), bufvec)
-            return word, embedding
+            if word_only
+                return word, Float64[]
+            else
+                embedding = parse.(Float64, bufvec)
+                return word, embedding
+            end
         end
 
-        # TODO Improve performance of this bit
         cnt = 0
         indices = Int[]
-        for (index, row) in enumerate(data)
-            word, embedding = _parseline(row)
-            LL[:, index] = embedding
-            indexed_words[index] = word
+        for (index, row) in enumerate(eachline(fid))
+            word, _ = _parseline(row, word_only=true)
             if length(keep_words)==0 || word in keep_words
+                _, embedding = _parseline(row)
+                LL[:, index] = embedding
+                indexed_words[index] = word
                 push!(indices, index)
                 cnt+=1
                 if cnt > max_stored_vocab_size-1
