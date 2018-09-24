@@ -1,5 +1,5 @@
 ---
-title: 'Embeddings.jl: easy access to pretrained word embeddings from julia'
+title: 'Embeddings.jl: easy access to pretrained word embeddings from Julia'
 tags:
   - julialang
   - opendata
