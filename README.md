@@ -15,6 +15,14 @@ This package exposes access to pretrained embeddings.
 
 At present it offers the famous [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings for English only, [GloVe](https://nlp.stanford.edu/projects/glove/) embeddings for English only, and [FastText](https://fasttext.cc/) embeddings for hundreds of languages.
 
+### Installation
+The package can be installed using the [julia package manager in the normal way.](https://julialang.github.io/Pkg.jl/v1/managing-packages/#Adding-packages-1).
+
+Open the REPL, press <kbd>]</kbd> to enter package mode, and then:
+
+```julia
+pkg> add Embeddings
+```
 
 ## Example
 
