@@ -129,4 +129,11 @@ see the DataDeps.jl readme.
 ## Contributing
 
  - Provide Hashstrings: I have only filled in the checksums for the FastText Embeddings that I have downloaded, which is only a small fraction. If you using embeddings files for a language that doesn't have its hashstring set, then DataDeps.jl will tell you the hashstring that need to be added to the file. It is a quick and easy PR.
- - Provide Implementations of other loadered: If you have implementations of code to load another format (e.g. Binary FastTest) it would be great if you could contribute them. I know I have a few others kicking around somewhere.
+ - Provide Implementations of other loaders: If you have implementations of code to load another format (e.g. Binary FastTest) it would be great if you could contribute them. I know I have a few others kicking around somewhere.
+ 
+ 
+## Support
+
+Feel free to ask for help on the [Julia Discourse forum](https://discourse.julialang.org/),
+or in the `#natural-language` channel on julia-slack. (Which you can [join here](https://slackinvite.julialang.org/)).
+You can also raise issues in this repository to request improvements to the documentation.
