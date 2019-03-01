@@ -23,6 +23,8 @@ Open the REPL, press <kbd>]</kbd> to enter package mode, and then:
 ```julia
 pkg> add Embeddings
 ```
+There are no further steps.
+Pretrained embeddings will be downloaded the first time you use them.
 
 ## Example
 
