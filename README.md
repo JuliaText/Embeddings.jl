@@ -129,6 +129,13 @@ see the DataDeps.jl readme.
 
 
 ## Contributing
+Contributions, in the form of bug-reports, pull requests, additional documentation are encouraged.
+They can be made to the Github repository.
+
+All contributions and communications should abide by the [Julia Community Standards](https://julialang.org/community/standards/).
+
+
+The following software contributions would particularly be appreciated:
 
  - Provide Hashstrings: I have only filled in the checksums for the FastText Embeddings that I have downloaded, which is only a small fraction. If you using embeddings files for a language that doesn't have its hashstring set, then DataDeps.jl will tell you the hashstring that need to be added to the file. It is a quick and easy PR.
  - Provide Implementations of other loaders: If you have implementations of code to load another format (e.g. Binary FastText) it would be great if you could contribute them. I know I have a few others kicking around somewhere.
