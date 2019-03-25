@@ -48,7 +48,7 @@ It currently provides access to:
 
  - multiple sets of word2vec embeddings [@word2vec] for English
  - multiple sets of GLoVE embeddings [@glove] for English
- - multiple sets of FastText embeddings [@fasttext157lang,@fasttext] for several hundred languages
+ - multiple sets of FastText embeddings [@fasttext157lang; @fasttext] for several hundred languages
 
 It is anticipated that as more pretrained embeddings are made available for more languages and using newer methods,
 the Embeddings.jl package will be updated to support them.
