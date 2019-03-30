@@ -26,14 +26,85 @@ pkg> add Embeddings
 There are no further steps.
 Pretrained embeddings will be downloaded the first time you use them.
 
-## Example
+
+## Details
+
+
+### `load_embeddings`
+
+    load_embeddings(EmbeddingSystem, [embedding_file|default_file_number])
+    load_embeddings(EmbeddingSystem{:lang}, [embedding_file|default_file_number])
+
+Loaded the embeddings from a embedding file.
+The embeddings should be of the type given by the Embedding system.
+
+If the `embedding file` is not provided, a default embedding file will be used.
+(It will be automatically installed if required).
+EmbeddingSystems have a language type parameter.
+For example `FastText_Text{:fr}` or `Word2Vec{:en}`, if that language parameter is not given it defaults to English.
+(I am sorry for the poor state of the NLP field that many embedding formats are only available pretrained in English.)
+Using this the correct  default embedding file will be installed for that language.
+For some languages and embedding systems there are multiple possible files.
+You can check the list of them using for example `language_files(FastText_Text{:de})`.
+The first is nominally the most popular, but if you want to default to another you can do so by setting the `default_file_num`.
+
+### This returns an `EmbeddingTable` object.
+This has 2 fields.
+
+ - `embeddings` is a matrix, each column is the embedding for a word.
+ - `vocab` is a vector of strings, ordered as per the columns of `embeddings`, such that the first string in vocab is the first column of `embeddings` etc
+
+We do not include a method for getting the index of a column from a word.
+This is trivial to define in code (`vocab2ind(vocab)=Dict(word=>ii for (ii,word) in enumerate(vocab))`),
+and you might like to be doing this in a more consistant way, e.g using [MLLabelUtils.jl](https://github.com/JuliaML/MLLabelUtils.jl),
+or you might like to build a much faster Dict solution on top of [InternedStrings.jl](https://github.com/JuliaString/InternedStrings.jl)
+
+
+## Configuration
+This package is build on top of [DataDeps.jl](https://github.com/oxinabox/DataDeps.jl).
+To configure, e.g., where downloaded files save to, and read from (and to understand how that works),
+see the DataDeps.jl readme.
+
+
+## Examples
 
 Load the package with
 
 ```
 julia> using Embeddings
 ```
+### Basic example
+The Following script loads up the embeddings,
+and defines a `Dict` to map from vocabulary word to index, in the embedding matrix,
+and a function that used it to get an embedding vector.
+This is a basic way to access the embedding for a word.
 
+```
+using Embeddings
+const embtable = load_embeddings(Word2Vec) # or load_embeddings(FastText_Text) or ...
+
+const get_word_index = Dict(word=>ii for (ii,word) in enumerate(embtable.vocab))
+
+function get_embedding(word)
+    ind = get_word_index[word]
+    emb = embtable.embeddings[:,ind]
+    return emb
+end
+```
+
+This can be used like so:
+```
+julia> get_embedding("blue")
+300-element Array{Float32,1}:
+  0.01540828
+  0.03409082
+  0.0882124
+  0.04680265
+ -0.03409082
+...
+```
+
+### Loading different Embeddings
 
 load up the default word2vec embeddings:
 ```
@@ -88,45 +159,6 @@ Embeddings.EmbeddingTable{Array{Float32,2},Array{String,1}}(Float32[-0.071549 0.
 julia> size(glove)
 (200, 10000)
 ```
-
-## Details
-
-
-### `load_embeddings`
-
-    load_embeddings(EmbeddingSystem, [embedding_file|default_file_number])
-    load_embeddings(EmbeddingSystem{:lang}, [embedding_file|default_file_number])
-
-Loaded the embeddings from a embedding file.
-The embeddings should be of the type given by the Embedding system.
-
-If the `embedding file` is not provided, a default embedding file will be used.
-(It will be automatically installed if required).
-EmbeddingSystems have a language type parameter.
-For example `FastText_Text{:fr}` or `Word2Vec{:en}`, if that language parameter is not given it defaults to English.
-(I am sorry for the poor state of the NLP field that many embedding formats are only available pretrained in English.)
-Using this the correct  default embedding file will be installed for that language.
-For some languages and embedding systems there are multiple possible files.
-You can check the list of them using for example `language_files(FastText_Text{:de})`.
-The first is nominally the most popular, but if you want to default to another you can do so by setting the `default_file_num`.
-
-### This returns an `EmbeddingTable` object.
-This has 2 fields.
-
- - `embeddings` is a matrix, each column is the embedding for a word.
- - `vocab` is a vector of strings, ordered as per the columns of `embeddings`, such that the first string in vocab is the first column of `embeddings` etc
-
-We do not include a method for getting the index of a column from a word.
-This is trivial to define in code (`vocab2ind(vocab)=Dict(word=>ii for (ii,word) in enumerate(vocab))`),
-and you might like to be doing this in a more consistant way, e.g using [MLLabelUtils.jl](https://github.com/JuliaML/MLLabelUtils.jl),
-or you might like to build a much faster Dict solution on top of [InternedStrings.jl](https://github.com/JuliaString/InternedStrings.jl)
-
-
-## Configuration
-This package is build on top of [DataDeps.jl](https://github.com/oxinabox/DataDeps.jl).
-To configure, e.g., where downloaded files save to, and read from (and to understand how that works),
-see the DataDeps.jl readme.
-
 
 ## Contributing
 Contributions, in the form of bug-reports, pull requests, additional documentation are encouraged.
