@@ -36,7 +36,7 @@ to be injected into models which may have only limited amounts of supervised, ta
 Many creators of word embedding methods have generously made sets of pretrained word representations publicly available.
 Embeddings.jl exposes these as a standard matrix of numbers and a corresponding array of strings.
 This lets Julia programs use word embeddings easily, either on their own or alongside machine learning packages such as Flux [@flux].
-In such deep learning packages, it is common to use word embeddings as an input layer of an long short term memory (LSTM) network or other machine learning model,
+In such deep learning packages, it is common to use word embeddings as an input layer of a LSTM (long short term memory) network or other machine learning model,
 where they may be kept invariant or used as initialization for fine-tuning on the supervised task.
 They can be summed to represent a bag of words, concatenated to form a matrix representation of a sentence or document, or used otherwise in a wide variety of natural language processing tasks.
 
