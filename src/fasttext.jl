@@ -2,25 +2,22 @@ abstract type FastText{LANG} <: EmbeddingSystem{LANG} end
 abstract type FastText_Text{LANG} <: FastText{LANG} end
 abstract type FastText_Bin{LANG} <: FastText{LANG} end
 
-
-
 function _load_embeddings(::Type{<:FastText_Bin}, embedding_file, max_vocab_size, keep_words)
     error("FastText Binary Format not supported. If anyone knows how to parse it please feel encouraged to make a PR.")
 end
 
-
 function _load_embeddings(::Type{<:FastText_Text}, embedding_file, max_vocab_size, keep_words)
    #If there are any words in keep_words, then only those are kept, otherwise all are kept
     local LL, indexed_words, index
-    
+
     if length(keep_words) > 0
         max_stored_vocab_size = length(keep_words)
     end
-        
+
     open(embedding_file,"r") do fh
         vocab_size, vector_size = parse.(Int64, split(readline(fh)))
         max_stored_vocab_size = min(max_vocab_size, vocab_size)
-        
+
         indexed_words = Vector{String}(undef, max_stored_vocab_size)
         LL = Array{Float32}(undef, vector_size, max_stored_vocab_size)
         index = 1
@@ -31,7 +28,7 @@ function _load_embeddings(::Type{<:FastText_Text}, embedding_file, max_vocab_siz
             if length(keep_words)==0 || word in keep_words
                 indexed_words[index]=word
                 LL[:,index] .= parse.(Float32, @view toks[2:end])
-            
+
                 index+=1
                 if index>max_stored_vocab_size
                     break
@@ -49,14 +46,14 @@ end
 
 
 function init(::Type{FastText})
-    
+
     #########
     # English
     for (source, name, hashstring) in [
             ("Common Crawl", "crawl-300d-2M.vec", "5bfffffbabdab299d4c9165c47275e8f982807a6eaca37ee1f71d3a79ddb544d"),
             ("Wiki News", "wiki-news-300d-1M.vec","bdeb85f44892c505953e3654183e9cb0d792ee51be0992460593e27198d746f8")
         ]
-        
+
         push!(language_files(FastText_Text{:en}), "FastText $(source)/$(name)")
         register(DataDep("FastText $(source)",
             """
@@ -75,7 +72,7 @@ function init(::Type{FastText})
             post_fetch_method=DataDeps.unpack
         ));
     end
-    
+
     #########################
     # Common Crawl
     for (lang, text_hashstring, bin_hashstring) in fast_commoncrawl_languages_and_hashes
@@ -91,13 +88,13 @@ function init(::Type{FastText})
                 License: CC-SA 3.0
                 Citation: E. Grave*, P. Bojanowski*, P. Gupta, A. Joulin, T. Mikolov, Learning Word Vectors for 157 Languages
                 """,
-                "https://s3-us-west-1.amazonaws.com/fasttext-vectors/word-vectors-v2/cc.$(lang).300.$(ext).gz",
+                "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.$(lang).300.$(ext).gz",
                 hashstring;
                 post_fetch_method=DataDeps.unpack
             ));
         end
     end
-    
+
     for (lang, hashstring) in fast_text_wiki_languages_and_hashes
         # TODO Add Binary files as well
         push!(language_files(FastText_Text{lang}), "FastText $lang Wiki Text/wiki.$(lang).vec")
@@ -109,13 +106,10 @@ function init(::Type{FastText})
             License: CC-SA 3.0
             Citation: P. Bojanowski*, E. Grave*, A. Joulin, T. Mikolov, Enriching Word Vectors with Subword Information
             """,
-            "https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.$(lang).vec",
+            "https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/wiki.$(lang).vec",
             hashstring;
         ));
     end
-    
-    
-    
 end
 
 
