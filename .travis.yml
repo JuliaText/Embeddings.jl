@@ -12,6 +12,11 @@ matrix:
   allow_failures:
     - julia: nightly
   fast_finish: true
+
+env:
+  - DATADEPS_ALWAYS_ACCEPT=true
+
+
 notifications:
   email: false
 after_success:
