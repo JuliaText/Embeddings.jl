@@ -15,7 +15,7 @@ matrix:
 
 env:
   - DATADEPS_ALWAYS_ACCEPT=true
-
+  - DATADEPS_PROGRESS_UPDATE_PERIOD=120
 
 notifications:
   email: false
