@@ -54,12 +54,17 @@ function _load_embeddings(::Type{<:GloVe}, embedding_file, max_vocab_size, keep_
     open(embedding_file) do f
         index = 1
         for line in eachline(f)
-            xs = split(line)
+            xs = split(line, ' ')
             word = xs[1]
             if length(keep_words) == 0 || (word in keep_words)
                 index > max_vocab_size && break
                 push!(indexed_words, word)
-                push!(LL, parse.(Float32, xs[2:end]))
+                try
+                    push!(LL, parse.(Float32, @view(xs[2:end])))
+                catch err
+                    err isa ArgumentError || rethrow()
+                    @warn "Could not parse word vector" index word exception=err
+                end
                 index += 1
             end
         end
