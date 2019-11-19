@@ -116,6 +116,16 @@ end
         end
     end
 
+    @testset "non-breaking-space" begin
+        # https://github.com/JuliaText/Embeddings.jl/issues/24
+        # This includes the text with nonbreaking space in the work
+        custom_glove_file = joinpath(@__DIR__, "data", "nbsp.glove.txt")
+        @testset "Basic" begin
+            glove = load_embeddings(GloVe, custom_glove_file)
+            @test ".\U00A0.\U00A0." ∈ glove.vocab
+            @test size(glove.embeddings) == (300, 3)
+        end
+    end
 end
 
 @testset "FastText" begin
