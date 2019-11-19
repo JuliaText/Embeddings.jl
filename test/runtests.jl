@@ -22,7 +22,7 @@ function tempdatadeps(fun)
         catch err
             @warn "Something went wrong with removing tempdir" tempdir exception=err
         end
-    end   
+    end
 end
 
 
@@ -40,6 +40,7 @@ but know that it deletes any downloaded data dependencies when it is done.
 macro testset_nokeep_data(name, expr)
     quote
         tempdatadeps() do
+            println("Testing ", $name)
             @testset $name $expr
         end
     end |> esc
@@ -69,8 +70,9 @@ end
     # just test one file from each of provided sets
     tests = ["glove.6B/glove.6B.50d.txt",
              #"glove.42B.300d/glove.42B.300d.txt",     # These files are too slow to download
-             #"glove.840B.300d/glove.840B.300d.txt",   # They are not that big bt are on a slow server
-             "glove.twitter.27B/glove.twitter.27B.25d.txt"]
+             #"glove.840B.300d/glove.840B.300d.txt",   # They are not that big but are on a slow server
+             #"glove.twitter.27B/glove.twitter.27B.25d.txt"
+            ]
 
     # read dimensionality from name (e.g. glove.6B.300d.txt -> 300)
     dim(x) = parse(Int, match(r"\.([0-9]+)d\.", x).captures[1])
@@ -123,27 +125,26 @@ end
             @test length(embs1.vocab)==100
             @test size(embs1.embeddings) == (300, 100)
         end
-            
-        @testset "Specific" begin           
+
+        @testset "Specific" begin
             embs_specific =  load_embeddings(FastText_Text; keep_words=Set(["red", "green", "blue"]))
             @test size(embs_specific.embeddings) == (300, 3)
             @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
         end
     end
 
-        
+
     @testset_nokeep_data "French" begin
         embs_fr = load_embeddings(FastText_Text{:fr}; max_vocab_size=100)
         @test length(embs_fr.vocab)==100
         @test size(embs_fr.embeddings) == (300, 100)
     end
-    
 
-        
+
+
     @testset_nokeep_data "English file number 2" begin
         embs_specific =  load_embeddings(FastText_Text, 2; keep_words=Set(["red", "green", "blue"]))
         @test size(embs_specific.embeddings) == (300, 3)
         @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
-    end   
-
+    end
 end

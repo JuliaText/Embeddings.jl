@@ -67,7 +67,7 @@ function init(::Type{FastText})
 
             Notice: this file is ~ 1GB
             """,
-            "https://s3-us-west-1.amazonaws.com/fasttext-vectors/$(name).zip",
+            "https://dl.fbaipublicfiles.com/fasttext/vectors-english/$(name).zip",
             hashstring,
             post_fetch_method=DataDeps.unpack
         ));
