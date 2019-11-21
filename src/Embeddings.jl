@@ -96,7 +96,7 @@ function load_embeddings(::Type{T},
         max_vocab_size=typemax(Int),
         keep_words=Set()) where T<:EmbeddingSystem
     
-    EmbeddingTable(_load_embeddings(T, embedding_file, max_vocab_size,  keep_words)...)
+    EmbeddingTable(_load_embeddings(T, embedding_file, max_vocab_size, Set(keep_words))...)
 end
 
 end
