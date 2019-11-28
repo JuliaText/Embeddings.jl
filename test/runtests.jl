@@ -150,6 +150,11 @@ end
         @test size(embs_fr.embeddings) == (300, 100)
     end
 
+    @testset_nokeep_data "Spanish" begin
+        embs_es = load_embeddings(FastText_Text{:es}; max_vocab_size=100)
+        @test length(embs_es.vocab)==100
+        @test size(embs_es.embeddings) == (300, 100)
+    end
 
 
     @testset_nokeep_data "English file number 2" begin
