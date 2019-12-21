@@ -3,17 +3,19 @@ module Embeddings
 using Statistics: norm
 using DataDeps
 using AutoHashEquals
+using HDF5
 
 export load_embeddings, language_files
-export Word2Vec, GloVe, FastText_Text
+export Word2Vec, GloVe, FastText_Text, ConceptNet
 
 abstract type EmbeddingSystem{LANG} end
 include("fasttext.jl")
 include("glove.jl")
 include("word2vec.jl")
+include("conceptnet.jl")
 
 function __init__()
-    for T in [Word2Vec, GloVe, FastText]
+    for T in [Word2Vec, GloVe, FastText, ConceptNet]
         init(T)
     end
 end

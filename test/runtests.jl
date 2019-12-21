@@ -158,3 +158,53 @@ end
         @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
     end
 end
+
+@testset "ConceptNet" begin
+    @testset_nokeep_data "Multilingual" begin
+        embs_full = load_embeddings(ConceptNet{:multi})
+
+        @test size(embs_full.embeddings) == (300, length(embs_full.vocab))
+
+        embs_mini = load_embeddings(ConceptNet{:multi}; max_vocab_size=100)
+        @test length(embs_mini.vocab)==100
+
+        @test embs_mini.embeddings == embs_full.embeddings[:, 1:100]
+        @test embs_mini.vocab == embs_full.vocab[1:100]
+    end
+
+    @testset_nokeep_data "English" begin
+        embs_full = load_embeddings(ConceptNet{:en})
+
+        @test size(embs_full.embeddings) == (300, length(embs_full.vocab))
+
+        embs_mini = load_embeddings(ConceptNet{:en}; max_vocab_size=100)
+        @test length(embs_mini.vocab)==100
+
+        @test embs_mini.embeddings == embs_full.embeddings[:, 1:100]
+        @test embs_mini.vocab == embs_full.vocab[1:100]
+
+        embs_specific =  load_embeddings(ConceptNet{:en};
+                                         keep_words=Set(["red", "green", "blue"]))
+
+        @test size(embs_specific.embeddings) == (300, 3)
+        @test Set(embs_specific.vocab) == Set(["red", "green", "blue"])
+    end
+
+    @testset_nokeep_data "Compressed" begin
+        embs_full = load_embeddings(ConceptNet{:compressed})
+
+        @test size(embs_full.embeddings) == (300, length(embs_full.vocab))
+
+        embs_mini = load_embeddings(ConceptNet{:compressed}; max_vocab_size=100)
+        @test length(embs_mini.vocab)==100
+
+        @test embs_mini.embeddings == embs_full.embeddings[:, 1:100]
+        @test embs_mini.vocab == embs_full.vocab[1:100]
+
+        embs_specific =  load_embeddings(ConceptNet{:compressed};
+                                         keep_words=Set(["/c/en/red", "/c/en/green", "/c/en/blue"]))
+
+        @test size(embs_specific.embeddings) == (300, 3)
+        @test Set(embs_specific.vocab) == Set(["/c/en/red", "/c/en/green", "/c/en/blue"])
+    end
+end
