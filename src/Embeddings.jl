@@ -12,6 +12,7 @@ include("fasttext.jl")
 include("glove.jl")
 include("word2vec.jl")
 include("Paragram.jl")
+include("common.jl")
 
 function __init__()
     for T in [Word2Vec, GloVe, FastText, Paragram]
