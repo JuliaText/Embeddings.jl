@@ -1,7 +1,5 @@
 abstract type Paragram{LANG} <: EmbeddingSystem{LANG} end
-using GoogleDrive
-using Random: randstring
-using HTTP 
+using GoogleDrive 
 
 function init(::Type{Paragram})
     vectors = [("paragram_300_ws353",
