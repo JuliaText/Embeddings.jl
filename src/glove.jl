@@ -44,6 +44,5 @@ function init(::Type{GloVe})
     end
 end
 
-_load_embeddings(::Type{<:GloVe}, embedding_file, max_vocab_size, keep_words) = _load_embeddings_csv( embedding_file, max_vocab_size, keep_words)
-
+_load_embeddings(::Type{<:GloVe}, embedding_file, max_vocab_size, keep_words) = _load_embeddings_csv(embedding_file, max_vocab_size, keep_words)
 
