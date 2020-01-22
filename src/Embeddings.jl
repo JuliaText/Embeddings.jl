@@ -5,7 +5,7 @@ using DataDeps
 using AutoHashEquals
 
 export load_embeddings, language_files
-export Word2Vec, GloVe, FastText_Text ,Paragram
+export Word2Vec, GloVe, FastText_Text, Paragram
 
 abstract type EmbeddingSystem{LANG} end
 include("fasttext.jl")
