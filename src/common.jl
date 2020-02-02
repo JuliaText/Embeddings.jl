@@ -1,5 +1,5 @@
 
-function _load_embeddings_csv( embedding_file, max_vocab_size, keep_words, Delim::AbstractChar=' ')
+function _load_embeddings_csv( embedding_file, max_vocab_size, keep_words,Delim::AbstractChar=',')
     local LL, indexed_words, index
     if length(keep_words) > 0
         max_vocab_size = length(keep_words)

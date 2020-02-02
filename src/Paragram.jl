@@ -38,6 +38,6 @@ function init(::Type{Paragram})
     end
 end
 
-_load_embeddings(::Type{<:Paragram}, embedding_file, max_vocab_size, keep_words) = _load_embeddings_csv( embedding_file, max_vocab_size, keep_words)
+_load_embeddings(::Type{<:Paragram}, embedding_file, max_vocab_size, keep_words) = _load_embeddings_csv( embedding_file, max_vocab_size, keep_words , ' ')
 
 
