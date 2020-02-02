@@ -1,5 +1,5 @@
 
-function _load_embeddings_csv( embedding_file, max_vocab_size, keep_words)
+function _load_embeddings_csv( embedding_file, max_vocab_size, keep_words,Delim::AbstractChar=' ')
     local LL, indexed_words, index
     if length(keep_words) > 0
         max_vocab_size = length(keep_words)
@@ -9,7 +9,7 @@ function _load_embeddings_csv( embedding_file, max_vocab_size, keep_words)
     open(embedding_file) do f
         index = 1
         for line in eachline(f)
-            xs = split(line, ' ')
+            xs = split(line, Delim)
             word = xs[1]
             if length(keep_words) == 0 || (word in keep_words)
                 index > max_vocab_size && break

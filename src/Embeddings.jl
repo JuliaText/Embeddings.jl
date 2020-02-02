@@ -3,6 +3,7 @@ module Embeddings
 using Statistics: norm
 using DataDeps
 using AutoHashEquals
+using GoogleDrive
 
 export load_embeddings, language_files
 export Word2Vec, GloVe, FastText_Text, Paragram
