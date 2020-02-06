@@ -9,7 +9,7 @@ function _load_embeddings_csv( embedding_file, max_vocab_size, keep_words,Delim:
     open(embedding_file) do f
         index = 1
         for line in eachline(f)
-            xs = split(line, Delim)
+            xs = split(line, delim)
             word = xs[1]
             if length(keep_words) == 0 || (word in keep_words)
                 index > max_vocab_size && break
