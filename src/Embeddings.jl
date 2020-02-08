@@ -3,17 +3,20 @@ module Embeddings
 using Statistics: norm
 using DataDeps
 using AutoHashEquals
+using GoogleDrive
 
 export load_embeddings, language_files
-export Word2Vec, GloVe, FastText_Text
+export Word2Vec, GloVe, FastText_Text, Paragram
 
 abstract type EmbeddingSystem{LANG} end
 include("fasttext.jl")
 include("glove.jl")
 include("word2vec.jl")
+include("Paragram.jl")
+include("common.jl")
 
 function __init__()
-    for T in [Word2Vec, GloVe, FastText]
+    for T in [Word2Vec, GloVe, FastText, Paragram]
         init(T)
     end
 end
