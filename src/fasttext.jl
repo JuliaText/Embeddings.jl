@@ -151,7 +151,7 @@ const fast_commoncrawl_languages_and_hashes = [
 	(:el, nothing, nothing),
 	(:eml, nothing, nothing),
 	(:eo, nothing, nothing),
-	(:es, nothing, nothing),
+	(:es, "116915c965346a0e3670b0e703e15e3526f31f1d216088eb3b30fc8f94982b82", nothing),
 	(:et, nothing, nothing),
 	(:eu, nothing, nothing),
 	(:fa, nothing, nothing),
