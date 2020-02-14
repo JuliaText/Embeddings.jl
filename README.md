@@ -8,12 +8,9 @@
 
 ## Introduction
 
-Word Embeddings are great.
-Basically the foundation of a huge pile of NLP work in the last decade and a half.
-Use them directly, or use them to initalize a neural network embedding layer.
-This package exposes access to pretrained embeddings.
+Word Embeddings present words as high-dimensional vectors, where every dimension corresponds to some latent feature [1]. This makes it possible to utilize different mathematical operations between words. With these we can discover semantic relationships between words. E.g. when using [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings and utilizing cosine similarity between vectors, the calculation vector(“Madrid”) - vector(“Spain”) + vector(“France”) gives as an answer the vector for word “Paris” [2]. 
 
-At present it offers the famous [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings for English only, [GloVe](https://nlp.stanford.edu/projects/glove/) embeddings for English only, and [FastText](https://fasttext.cc/) embeddings for hundreds of languages.
+This package gives access to pretrained embeddings. At its current state it includes following word embeddings: [Word2Vec](https://code.google.com/archive/p/word2vec/) (English), [GloVe](https://nlp.stanford.edu/projects/glove/) (English), and [FastText](https://fasttext.cc/) (hundreds of languages). 
 
 ### Installation
 The package can be installed using the [julia package manager in the normal way.](https://julialang.github.io/Pkg.jl/v1/managing-packages/#Adding-packages-1).
@@ -181,3 +178,8 @@ Sometimes Github notifications get lost.
 Feel free to ask for help on the [Julia Discourse forum](https://discourse.julialang.org/),
 or in the `#natural-language` channel on julia-slack. (Which you can [join here](https://slackinvite.julialang.org/)).
 You can also raise issues in this repository to request improvements to the documentation.
+
+## Sources
+[1]: Turian, Joseph, Lev Ratinov, and Yoshua Bengio. "Word representations: a simple and general method for semi-supervised learning." Proceedings of the 48th annual meeting of the association for computational linguistics. Association for Computational Linguistics, 2010.
+
+[2]: Mikolov, Tomas, et al. "Distributed representations of words and phrases and their compositionality." Advances in neural information processing systems. 2013.
