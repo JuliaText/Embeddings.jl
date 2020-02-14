@@ -8,7 +8,9 @@
 
 ## Introduction
 
-Word Embeddings present words as high-dimensional vectors, where every dimension corresponds to some latent feature [1]. This makes it possible to utilize different mathematical operations between words. With these we can discover semantic relationships between words. E.g. when using [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings and utilizing cosine similarity between vectors, the calculation vector(“Madrid”) - vector(“Spain”) + vector(“France”) gives as an answer the vector for word “Paris” [2]. 
+Word Embeddings present words as high-dimensional vectors, where every dimension corresponds to some latent feature [1]. This makes it possible to utilize different mathematical operations between words. With these we can discover semantic relationships between words. E.g. when using [Word2Vec](https://code.google.com/archive/p/word2vec/) embeddings and utilizing cosine similarity between vectors, the calculation `vector(“Madrid”) - vector(“Spain”) + vector(“France”)` gives as an answer the vector for word “Paris” [2]. 
+Pretraining Word Embeddings are commonly uses to initialize the bottom layer of a more advanced NLP method, such as a LSTM [3].
+Simply summing the embeddings in a sentence or phrase can in and of itself be a surprisingly powerful way to represent the sentence/phrase, and can be used as a input to simple ML models like SVM 4]. 
 
 This package gives access to pretrained embeddings. At its current state it includes following word embeddings: [Word2Vec](https://code.google.com/archive/p/word2vec/) (English), [GloVe](https://nlp.stanford.edu/projects/glove/) (English), and [FastText](https://fasttext.cc/) (hundreds of languages). 
 
@@ -180,6 +182,11 @@ or in the `#natural-language` channel on julia-slack. (Which you can [join here]
 You can also raise issues in this repository to request improvements to the documentation.
 
 ## Sources
-[1]: Turian, Joseph, Lev Ratinov, and Yoshua Bengio. "Word representations: a simple and general method for semi-supervised learning." Proceedings of the 48th annual meeting of the association for computational linguistics. Association for Computational Linguistics, 2010.
+[1]: [Turian, Joseph, Lev Ratinov, and Yoshua Bengio. "Word representations: a simple and general method for semi-supervised learning." Proceedings of the 48th annual meeting of the association for computational linguistics. Association for Computational Linguistics, 2010.](https://www.aclweb.org/anthology/P10-1040/)
 
-[2]: Mikolov, Tomas, et al. "Distributed representations of words and phrases and their compositionality." Advances in neural information processing systems. 2013.
+[2]: [Mikolov, Tomas, et al. "Distributed representations of words and phrases and their compositionality." Advances in neural information processing systems. 2013.](https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf)
+
+[3]: [White, Lyndon et al. Neural Representations of Natural Language. Springer: Studies in Computational Intelligence. 2018.](https://www.springer.com/us/book/9789811300615)
+
+[4]: [White, Lyndon. On the surprising capacity of linear combinations of embeddings for natural language processing.
+Doctorial Thesis, The University of Western Australia. 2019](https://research-repository.uwa.edu.au/en/publications/on-the-surprising-capacity-of-linear-combinations-of-embeddings-f)
