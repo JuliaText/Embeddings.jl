@@ -15,7 +15,7 @@ Simply summing the embeddings in a sentence or phrase can in and of itself be a 
 This package gives access to pretrained embeddings. At its current state it includes following word embeddings: [Word2Vec](https://code.google.com/archive/p/word2vec/) (English), [GloVe](https://nlp.stanford.edu/projects/glove/) (English), and [FastText](https://fasttext.cc/) (hundreds of languages). 
 
 ### Installation
-The package can be installed using the [julia package manager in the normal way.](https://julialang.github.io/Pkg.jl/v1/managing-packages/#Adding-packages-1).
+The package can be installed using the [julia package manager in the normal way](https://julialang.github.io/Pkg.jl/v1/managing-packages/#Adding-packages-1).
 
 Open the REPL, press <kbd>]</kbd> to enter package mode, and then:
 
