@@ -4,6 +4,7 @@ using Statistics: norm
 using DataDeps
 using AutoHashEquals
 using GoogleDrive
+using PrecompileTools
 
 export load_embeddings, language_files
 export Word2Vec, GloVe, FastText_Text, Paragram
@@ -14,12 +15,6 @@ include("glove.jl")
 include("word2vec.jl")
 include("Paragram.jl")
 include("common.jl")
-
-function __init__()
-    for T in [Word2Vec, GloVe, FastText, Paragram]
-        init(T)
-    end
-end
 
 @auto_hash_equals struct EmbeddingTable{M<:AbstractMatrix, A<:AbstractVector}
     embeddings::M
@@ -100,6 +95,14 @@ function load_embeddings(::Type{T},
         keep_words=Set()) where T<:EmbeddingSystem
     
     EmbeddingTable(_load_embeddings(T, embedding_file, max_vocab_size, Set(keep_words))...)
+end
+
+@setup_workload begin
+    @compile_workload begin
+        for T in [Word2Vec, GloVe, FastText, Paragram]
+            init(T)
+        end
+    end
 end
 
 end
