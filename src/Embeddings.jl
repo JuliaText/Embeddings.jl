@@ -97,12 +97,18 @@ function load_embeddings(::Type{T},
     EmbeddingTable(_load_embeddings(T, embedding_file, max_vocab_size, Set(keep_words))...)
 end
 
-@setup_workload begin
-    @compile_workload begin
-        for T in [Word2Vec, GloVe, FastText, Paragram]
-            init(T)
-        end
+function init_systems()
+    for T in [Word2Vec, GloVe, FastText, Paragram]
+        init(T)
     end
+end
+
+@setup_workload begin
+    @compile_workload init_systems()
+end
+
+function __init__()
+    init_systems()
 end
 
 end
