@@ -6,7 +6,7 @@ function _load_embeddings(::Type{<:FastText_Bin}, embedding_file, max_vocab_size
     error("FastText Binary Format not supported. If anyone knows how to parse it please feel encouraged to make a PR.")
 end
 
-function _load_embeddings(::Type{<:FastText_Text}, embedding_file, max_vocab_size, keep_words)
+function _load_embeddings(::Type{<:FastText_Text}, fh::IO, max_vocab_size, keep_words)
    #If there are any words in keep_words, then only those are kept, otherwise all are kept
     local LL, indexed_words, index
 
@@ -14,28 +14,28 @@ function _load_embeddings(::Type{<:FastText_Text}, embedding_file, max_vocab_siz
         max_stored_vocab_size = length(keep_words)
     end
 
-    open(embedding_file,"r") do fh
-        vocab_size, vector_size = parse.(Int64, split(readline(fh)))
-        max_stored_vocab_size = min(max_vocab_size, vocab_size)
+    
+    vocab_size, vector_size = parse.(Int64, split(readline(fh)))
+    max_stored_vocab_size = min(max_vocab_size, vocab_size)
 
-        indexed_words = Vector{String}(undef, max_stored_vocab_size)
-        LL = Array{Float32}(undef, vector_size, max_stored_vocab_size)
-        index = 1
-        @inbounds for _ in 1:vocab_size
-            line = readline(fh)
-            toks = split(line)
-            word = first(toks)
-            if length(keep_words)==0 || word in keep_words
-                indexed_words[index]=word
-                LL[:,index] .= parse.(Float32, @view toks[2:end])
+    indexed_words = Vector{String}(undef, max_stored_vocab_size)
+    LL = Array{Float32}(undef, vector_size, max_stored_vocab_size)
+    index = 1
+    @inbounds for _ in 1:vocab_size
+        line = readline(fh)
+        toks = split(line)
+        word = first(toks)
+        if length(keep_words)==0 || word in keep_words
+            indexed_words[index]=word
+            LL[:,index] .= parse.(Float32, @view toks[2:end])
 
-                index+=1
-                if index>max_stored_vocab_size
-                    break
-                end
+            index+=1
+            if index>max_stored_vocab_size
+                break
             end
         end
     end
+    
 
     LL = LL[:,1:index-1] #throw away unused columns
     indexed_words = indexed_words[1:index-1] #throw away unused columns
